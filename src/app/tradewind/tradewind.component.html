@@ -1,0 +1,22 @@
+<div style="margin-top:10em;">
+  <table>
+    <tr>
+      <td style="width:10em; text-align: center;font-weight: bold;">>= Limit</td>
+      <td bgcolor="#FF512C" style="height:10em;font-weight: bold;" *ngFor="let pool of limitExceeded">CP {{pool}}</td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
+      <td style="width:10em; text-align: center;font-weight: bold;">>= Warning Pct</td>
+      <td bgcolor="#FFCC00"  style="height:10em;font-weight: bold;" *ngFor="let pool of wrngExceeded">CP {{pool}}</td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
+      <td style="width:10em; text-align: center;font-weight: bold;">>= Configured No</td>
+      <td bgcolor="#94D878" style="height:10em;font-weight: bold;" *ngFor="let pool of cfgdnoExceeded">CP {{pool}}</td>
+    </tr>
+  </table>
+</div>

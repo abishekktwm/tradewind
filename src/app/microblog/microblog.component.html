@@ -1,0 +1,86 @@
+<div class="container">
+    <div id="timeline">
+      <div *ngFor="let post of posts" class="post wordwrap" [ngClass]="{'leftpadding':!post.reply_to==''}">
+          <div >
+              <img src= {{post.img}} [ngClass]="{
+                'avatar':post.user!==4,
+                'avatarRight':post.user===4,
+                'avatarReply':post.user===4 && post.reply_to
+                }">
+          </div>
+          <div  class="metadata" style="width:580px;">
+            <div [hidden]="users[post.user].verified==false || post.user==4">
+              <i style="float:left;font-size: 15px;padding-right:3px;" class="tiny material-icons">verified_user</i>
+            </div>
+            <div [hidden]="post.user===4" style="float:left;"> {{users[post.user].real_name}} - @{{users[post.user].username }} </div>
+            <div [hidden]="!post.user===4"  [ngClass]="{
+              'ago':!post.reply_to,
+              'replyago':post.reply_to,
+              'greenreplyago':post.user===4 && !post.reply_to
+              }">{{post.ts*1000 | timeAgo}}</div>
+          </div>
+  
+          <div [ngClass]="{
+            'bubble':post.user1!==4,
+            'greenBubble':post.user===4 && !post.reply_to,
+            'replybubble':post.reply_to
+            }" (mouseenter) ="mouseEnter(post.id)" (mouseleave) ="mouseLeave(post.id);" [hidden]='post.hovered' >         
+              <p [ngClass]="{
+                'postmessage':post.user!==4 && !post.reply_to,
+                'greenpostmessage':post.user===4 && !post.reply_to,
+                'replymessage':post.reply_to
+                }"> 
+              {{post.message}}
+              <span [hidden]='!post.url'><i style="vertical-align:middle" class="tiny material-icons">link</i></span>
+              </p>
+          </div>
+          <div class="bubble" [ngStyle]="{'width':!post.reply_to==''? '405px':'470px'}" style="margin-top:0px" [hidden]='!post.hovered' (mouseenter) ="mouseEnter(post.id)" (mouseleave) ="mouseLeave(post.id);">            
+            <div style="text-align:center;padding-top:28px;">
+              <span><i class="tiny material-icons"[ngClass]="{
+                'redmaterial-icons':post.replying==true
+                }" (click)=postReply(post.id)>reply</i></span>
+              <span><i style="padding:0px 30px 0px 30px;width:20px;height:20px" class="tiny material-icons" (click)=postRePost(post.id)>repeat</i></span>
+              <span><i  class="tiny material-icons" [ngClass]="{
+                'redmaterial-icons':post.favcount==1
+                }" (click)=makePostFav(post.id)>favorite</i>
+              </span>            
+            </div>  
+            <div style="text-align:center;" >
+                <span class="counters" >{{post.replycount}}</span>
+                <span style="padding:0px 40px 0px 48px" class="counters" >{{post.repostcount}}</span>
+                <span class="counters">{{post.favcount}}</span>
+            </div>          
+          </div>
+        <img [hidden]='!post.url' class='embeddedimg' src= {{post.url}}/>
+      </div>
+    </div>
+    <div class="footer">
+      <hr [ngClass]="{
+          'greenline':newMessage.length<=140,
+          'redline':newMessage.length>140
+      }">
+      <div class="counter" [ngClass]="{
+        'green':newMessage.length<=140,
+        'red':newMessage.length>140
+      }">          
+        <span>{{140 - newMessage.length}}</span>         
+      </div>
+      <div>          
+        <input #maininput (keyup.enter)=postNewPost(newpost) [(ngModel)]="newMessage" type="text" id="new_post_text" placeholder="what's happening?">
+      </div>
+      <div class="send">
+        <div [ngClass]="{
+          'green':newMessage.length<=140,
+          'grey':newMessage.length>140
+        }">
+            <i class="material-icons" (click)=postNewPost(newpost)>send</i>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+  
+  
+
+
